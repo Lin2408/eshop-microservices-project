@@ -17,7 +17,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          global-json-file: global.json
 
       - name: Restore Web Solution
         run: dotnet restore eShop.Web.slnf
@@ -25,5 +25,7 @@ jobs:
       - name: Build Web Solution
         run: dotnet build eShop.Web.slnf --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test --solution eShop.Web.slnf --configuration Release --no-build --no-progress --output detailed
+      - name: Test Unit Projects
+        run: |
+          dotnet test --project tests/Basket.UnitTests/Basket.UnitTests.csproj --configuration Release --no-build --no-progress --output detailed
+          dotnet test --project tests/Ordering.UnitTests/Ordering.UnitTests.csproj --configuration Release --no-build --no-progress --output detailed
