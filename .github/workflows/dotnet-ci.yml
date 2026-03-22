@@ -22,8 +22,8 @@ jobs:
       - name: Restore
         run: dotnet restore
 
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
+      - name: Build Web Project
+        run: dotnet build ./src/WebApp/WebApp.csproj --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test --no-build --configuration Release
+        run: dotnet test ./tests --configuration Release --no-build
