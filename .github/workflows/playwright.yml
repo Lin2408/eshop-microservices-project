@@ -30,7 +30,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install .NET HTTPS Development Certificate
-      # if: matrix.os == 'ubuntu-latest'
+      if: runner.os != 'Linux'
       run: |
         dotnet dev-certs https --clean
         dotnet dev-certs https --trust
@@ -40,6 +40,7 @@ jobs:
       run: npx playwright test
       env:
         ESHOP_USE_HTTP_ENDPOINTS: 1
+        ASPNETCORE_URLS: http://localhost:5045
         USERNAME1: bob
         PASSWORD: Pass123$
     - uses: actions/upload-artifact@v4
