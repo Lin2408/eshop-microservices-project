@@ -160,6 +160,18 @@ public sealed class CatalogApiTests : IClassFixture<CatalogApiFixture>
     [Theory]
     [InlineData(1.0)]
     [InlineData(2.0)]
+    public async Task GetCatalogItemWithUnknownIdReturnsNotFound(double version)
+    {
+        var _httpClient = CreateHttpClient(new ApiVersion(version));
+
+        var response = await _httpClient.GetAsync("/api/catalog/items/999999", TestContext.Current.CancellationToken);
+
+        Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Theory]
+    [InlineData(1.0)]
+    [InlineData(2.0)]
     public async Task GetCatalogItemWithExactName(double version)
     {
         var _httpClient = CreateHttpClient(new ApiVersion(version));
@@ -426,5 +438,85 @@ public sealed class CatalogApiTests : IClassFixture<CatalogApiFixture>
         // Assert - 1
         Assert.Equal("NoContent", response.StatusCode.ToString());
         Assert.Equal("NotFound", responseStatus.ToString());
+    }
+
+    [Theory]
+    [InlineData(1.0)]
+    [InlineData(2.0)]
+    public async Task GetHighPageIndexReturnsEmpty(double version)
+    {
+        var _httpClient = CreateHttpClient(new ApiVersion(version));
+
+        var response = await _httpClient.GetAsync("/api/catalog/items?pageIndex=9999&pageSize=10", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        var result = JsonSerializer.Deserialize<PaginatedItems<CatalogItem>>(body, _jsonSerializerOptions);
+
+        Assert.Empty(result.Data);
+    }
+
+    [Theory]
+    [InlineData(1.0)]
+    [InlineData(2.0)]
+    public async Task GetTypesReturnsData(double version)
+    {
+        var _httpClient = CreateHttpClient(new ApiVersion(version));
+
+        var response = await _httpClient.GetAsync("api/catalog/catalogtypes", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        var types = JsonSerializer.Deserialize<List<CatalogType>>(body, _jsonSerializerOptions);
+
+        Assert.NotEmpty(types);
+    }
+
+    [Theory]
+    [InlineData(1.0)]
+    [InlineData(2.0)]
+    public async Task GetBrandsReturnsData(double version)
+    {
+        var _httpClient = CreateHttpClient(new ApiVersion(version));
+
+        var response = await _httpClient.GetAsync("api/catalog/catalogbrands", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        var brands = JsonSerializer.Deserialize<List<CatalogBrand>>(body, _jsonSerializerOptions);
+
+        Assert.NotEmpty(brands);
+    }
+
+    [Theory]
+    [InlineData(1.0)]
+    [InlineData(2.0)]
+    public async Task GetItemsWithPageSizeReturnsItems(double version)
+    {
+        var _httpClient = CreateHttpClient(new ApiVersion(version));
+
+        var response = await _httpClient.GetAsync("/api/catalog/items?pageIndex=0&pageSize=3", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        var result = JsonSerializer.Deserialize<PaginatedItems<CatalogItem>>(body, _jsonSerializerOptions);
+
+        Assert.Equal(3, result.Data.Count());
+    }
+
+    [Theory]
+    [InlineData(1.0)]
+    [InlineData(2.0)]
+    public async Task GetItemByIdReturnsItem(double version)
+    {
+        var _httpClient = CreateHttpClient(new ApiVersion(version));
+
+        var response = await _httpClient.GetAsync("/api/catalog/items/1", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        var item = JsonSerializer.Deserialize<CatalogItem>(body, _jsonSerializerOptions);
+
+        Assert.NotNull(item.Name);
     }
 }

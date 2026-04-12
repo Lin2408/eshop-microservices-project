@@ -1,6 +1,7 @@
+/// <reference types="node" />
 import { test as setup, expect } from '@playwright/test';
 import { STORAGE_STATE } from '../playwright.config';
-import { assert } from 'console';
+import assert from 'node:assert/strict';
 
 assert(process.env.USERNAME1, 'USERNAME1 is not set');
 assert(process.env.PASSWORD, 'PASSWORD is not set');
