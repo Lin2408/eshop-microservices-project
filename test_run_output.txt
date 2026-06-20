@@ -1,0 +1,15 @@
+姝ｅ湪浠庝互涓嬩綅缃繍琛屾祴璇?D:\eshop\eShop\tests\Catalog.FunctionalTests\bin\Debug\net10.0\Catalog.FunctionalTests.dll (net10.0|x64)
+[+0/x0/?0] Catalog.FunctionalTests.dll (net10.0|x64)(2s)
+
+[+0/x0/?0] Catalog.FunctionalTests.dll (net10.0|x64)(5s)
+
+[+0/x0/?0] Catalog.FunctionalTests.dll (net10.0|x64)(8s)
+
+D:\eshop\eShop\tests\Catalog.FunctionalTests\bin\Debug\net10.0\Catalog.FunctionalTests.dll (net10.0|x64) 宸查€氳繃 (11s 327ms)
+
+娴嬭瘯杩愯鎽樿: 宸查€氳繃!
+  鎬昏: 42
+  澶辫触: 0
+  鎴愬姛: 42
+  宸茶烦杩? 0
+  鎸佺画鏃堕棿: 11s 647ms
